@@ -1,21 +1,41 @@
-# LinkedIn Learning Auto-Streamer 🚀
+# 🚀 LinkedIn Learning Auto-Streamer (Robust Edition)
 
-Bộ công cụ tự động hóa rảnh tay cho LinkedIn Learning, được tối ưu hóa để chống lại các đợt cập nhật giao diện của website.
+**Giải pháp trình chiếu rảnh tay tối thượng cho LinkedIn Learning.**
 
-## ✨ Điểm khác biệt của phiên bản Robust (v1.5)
-
-* **Loại bỏ phụ thuộc ID:** Không sử dụng các ID dễ thay đổi như `ember123`.
-* **Semantic Search:** Tìm kiếm nút bấm dựa trên ý nghĩa văn bản (Text Content) và thuộc tính trợ năng (ARIA labels).
-* **Deep Crawling:** Tự động tìm thẻ cha có khả năng click (`closest('button')`) khi nhận diện được văn bản bên trong.
-* **Đa chế độ:** Hỗ trợ đồng thời Video, Tài liệu (Reading), Quiz và Chuyển chương (Section).
-
-## 🛠 Cách cài đặt & Cập nhật
-1. Lưu mã nguồn vào thư mục.
-2. Tại `chrome://extensions/`, nạp thư mục qua **Load unpacked**.
-3. Mỗi khi cập nhật code mới, hãy nhấn nút **Reload (biểu tượng xoay)** trên thẻ Extension để thay đổi có hiệu lực.
-
-## ⚙️ Cơ chế hoạt động
-Extension quét trang mỗi 3 giây. Riêng với tài liệu đọc, hệ thống sẽ đợi 5 giây để mô phỏng hành vi đọc của con người trước khi tự động nhấn "Next".
+Tiện ích mở rộng này được thiết kế để biến trải nghiệm học tập trên LinkedIn Learning thành một luồng phát nội dung liên tục, tự động hóa mọi tương tác vật lý (click chuột, gõ phím).
 
 ---
-*Lưu ý: Luôn chạy trình duyệt ở tab đang hiển thị (active tab) để đạt hiệu quả cao nhất.*
+
+## 🔥 Tại sao bạn phải sử dụng công cụ này?
+
+1.  **Tiết kiệm thời gian:** Loại bỏ việc phải canh video kết thúc hoặc bấm qua các tài liệu đọc.
+2.  **Độ bền cao (Robust):** Sử dụng công nghệ **Semantic Search** tìm nút theo ý nghĩa văn bản, không sợ LinkedIn đổi ID (`ember123`).
+3.  **Học không gián đoạn:** Tự động xử lý Video, Tài liệu (Reading), Quiz và Chuyển chương (Section).
+4.  **Chế độ vắng mặt:** Tự động tắt popup "Are you still watching?" để trình chiếu liên tục.
+
+---
+
+## ✨ Tính năng chính
+
+* **Auto Next Video:** Chuyển bài ngay khi video kết thúc.
+* **Document Auto-Next:** Tự động đợi 5 giây và chuyển bài tại các trang tài liệu.
+* **Section Auto-Jump:** Tự động vượt qua màn hình chuyển chương.
+* **Quiz Bypass:** Tự động tìm nút Skip cho các bài kiểm tra không bắt buộc.
+
+---
+
+## 🛠 Hướng dẫn cài đặt & Cập nhật
+
+### Cài đặt lần đầu:
+1. Lưu các file vào thư mục `LinkedInAutoPlayer`.
+2. Truy cập `chrome://extensions/` trên Chrome.
+3. Bật **Developer mode** (Góc trên bên phải).
+4. Chọn **Load unpacked** và trỏ đến thư mục chứa file.
+
+### Cách cập nhật phiên bản mới:
+1. Copy code mới vào file `content.js`.
+2. Vào `chrome://extensions/`, nhấn nút **Reload (Mũi tên xoay tròn)** tại thẻ của tiện ích này.
+3. Tải lại trang (F5) LinkedIn Learning.
+
+---
+*Phát triển cho mục đích trình chiếu và hỗ trợ học tập rảnh tay.*
