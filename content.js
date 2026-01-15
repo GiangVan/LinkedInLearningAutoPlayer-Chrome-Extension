@@ -1,13 +1,21 @@
-// content.js - Phiên bản v1.3: Hỗ trợ tự động chuyển trang tài liệu (Document)
+// content.js - Phiên bản Robust (Hạn chế tối đa phụ thuộc vào ID/Class biến động)
 
-console.log("LinkedIn Auto Player v1.3 đã sẵn sàng!");
+console.log("LinkedIn Auto Player [Robust Mode] đã kích hoạt!");
 
-function findButtonByText(textKeywords) {
-    const elements = document.querySelectorAll('button, a, span');
+/**
+ * Hàm tìm kiếm phần tử có khả năng click dựa trên nội dung văn bản
+ * @param {string} tagSelector - Loại thẻ cần quét (button, a, span...)
+ * @param {string[]} keywords - Danh sách từ khóa (Next, Skip, Continue...)
+ */
+function findClickableByText(tagSelector, keywords) {
+    const elements = document.querySelectorAll(tagSelector);
     for (let el of elements) {
-        const text = (el.innerText || "").toLowerCase().trim();
-        for (let keyword of textKeywords) {
-            if (text === keyword.toLowerCase()) {
+        const text = (el.innerText || el.textContent || "").toLowerCase().trim();
+        const ariaLabel = (el.getAttribute('aria-label') || "").toLowerCase();
+
+        for (let key of keywords) {
+            if (text === key.toLowerCase() || ariaLabel.includes(key.toLowerCase())) {
+                // Trả về phần tử click được gần nhất (chính nó hoặc cha của nó)
                 return el.closest('button') || el.closest('a') || el;
             }
         }
@@ -15,61 +23,55 @@ function findButtonByText(textKeywords) {
     return null;
 }
 
-function autoClicker() {
+function autoPlayerLogic() {
     try {
-        // --- 1. XỬ LÝ TÀI LIỆU (Document/Reading) ---
-        // Phát hiện dựa trên class paging của tài liệu
-        const docNextBtn = document.querySelector('.classroom-multimedia__paging button');
-        if (docNextBtn) {
-            const btnText = docNextBtn.innerText.toLowerCase();
-            if (btnText.includes('next') && docNextBtn.offsetParent !== null) {
-                console.log("👉 Phát hiện tài liệu bài đọc. Sẽ chuyển bài sau 5 giây...");
-                // Đợi một chút để trang kịp load và mô phỏng việc đọc trước khi click
-                setTimeout(() => {
-                    docNextBtn.click();
-                }, 5000);
-                return;
-            }
+        // --- 1. XỬ LÝ TRANG TÀI LIỆU (DOCUMENT) ---
+        // Thay vì bắt ID, ta tìm container có vai trò "paging" hoặc "multimedia"
+        const nextDocBtn = findClickableByText('.classroom-multimedia__paging span, .classroom-multimedia__paging button', ["next", "tiếp theo"]);
+        if (nextDocBtn && nextDocBtn.offsetParent !== null) {
+            console.log("Found Document Next button via Semantic Search.");
+            setTimeout(() => nextDocBtn.click(), 5000);
+            return;
         }
 
-        // --- 2. XỬ LÝ CHUYỂN SECTION (Màn hình Course Incomplete) ---
-        const continueSectionBtn = document.querySelector('a.media-screens-course-incomplete__show-all');
+        // --- 2. XỬ LÝ CHUYỂN SECTION (COURSE INCOMPLETE) ---
+        // Tìm link có chứa chữ "Continue course" bất kể class là gì
+        const continueSectionBtn = findClickableByText('a, button', ["continue course", "tiếp tục khóa học"]);
         if (continueSectionBtn && continueSectionBtn.offsetParent !== null) {
-            console.log("👉 Đang chuyển sang Section/Review tiếp theo...");
+            console.log("Moving to next section...");
             continueSectionBtn.click();
             return;
         }
 
-        // --- 3. XỬ LÝ NÚT "NEXT UP" (Thumbnail kết thúc video) ---
-        const nextUpBtn = document.querySelector('button.classroom-next-up__image-container');
+        // --- 3. XỬ LÝ NÚT NEXT UP (THUMBNAIL) ---
+        // Sử dụng data-attribute hoặc class chức năng (ít thay đổi hơn ID)
+        const nextUpBtn = document.querySelector('[class*="next-up__image-container"]') ||
+            document.querySelector('[data-control-name="next_video"]');
         if (nextUpBtn && nextUpBtn.offsetParent !== null) {
-            console.log("👉 Kết thúc video. Đang Next...");
+            console.log("Clicking Next Up thumbnail...");
             nextUpBtn.click();
             return;
         }
 
-        // --- 4. CÁC NÚT ĐIỀU HƯỚNG VĂN BẢN (Quiz/Skip) ---
-        const generalBtn = findButtonByText(["continue course", "skip", "bỏ qua", "resume", "tiếp tục"]);
-        if (generalBtn && generalBtn.offsetParent !== null) {
-            console.log("👉 Đang xử lý nút điều hướng: " + generalBtn.innerText);
-            generalBtn.click();
+        // --- 4. XỬ LÝ QUIZ / POPUP / ARE YOU STILL THERE ---
+        const popupBtn = findClickableByText('button, a', ["skip", "bỏ qua", "resume", "yes", "still watching", "i'm back"]);
+        if (popupBtn && popupBtn.offsetParent !== null) {
+            console.log("Bypassing Quiz/Popup/Idle check...");
+            popupBtn.click();
             return;
         }
 
-        // --- 5. TỰ ĐỘNG CHUYỂN KHI VIDEO KẾT THÚC ---
-        const videoElement = document.querySelector('video');
-        if (videoElement && videoElement.ended) {
-            const playerNextBtn = document.querySelector('.vjs-next-button') ||
-                document.querySelector('[data-control-name="next_video"]');
-            if (playerNextBtn) {
-                playerNextBtn.click();
-            }
+        // --- 5. TỰ ĐỘNG CHUYỂN VIDEO (FALLBACK) ---
+        const video = document.querySelector('video');
+        if (video && video.ended) {
+            const playerNext = document.querySelector('.vjs-next-button');
+            if (playerNext) playerNext.click();
         }
 
     } catch (err) {
-        console.error("Lỗi Auto Player:", err);
+        // Không hiện log lỗi liên tục để tránh rác console
     }
 }
 
-// Kiểm tra mỗi 3 giây để tránh xung đột với các hàm setTimeout bên trong
-setInterval(autoClicker, 3000);
+// Chạy vòng lặp kiểm tra
+setInterval(autoPlayerLogic, 3000);

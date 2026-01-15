@@ -1,30 +1,21 @@
 # LinkedIn Learning Auto-Streamer 🚀
 
-**LinkedIn Learning Auto-Streamer** là một Chrome Extension giúp tự động hóa quá trình học tập, tối ưu cho việc trình chiếu (slideshow) nội dung liên tục mà không cần tác động thủ công.
+Bộ công cụ tự động hóa rảnh tay cho LinkedIn Learning, được tối ưu hóa để chống lại các đợt cập nhật giao diện của website.
 
-## ✨ Tính năng cập nhật (v1.3)
+## ✨ Điểm khác biệt của phiên bản Robust (v1.5)
 
-* **[Mới] Tự động đọc tài liệu:** Nhận diện các trang "Reading Material" (Tài liệu đọc) và tự động nhấn **Next** sau 5 giây để tiếp tục khóa học.
-* **Tự động chuyển Section:** Vượt qua màn hình "You’re almost there!" bằng cách tự động click **Continue course**.
-* **Tiếp tục bài học:** Tự động click vào các nút **Next Up** (hình ảnh thumbnail) khi video kết thúc.
-* **Bỏ qua Quiz:** Tự động nhấn **Skip** hoặc **Resume** tại các điểm kiểm tra kiến thức giữa bài.
-* **Chống treo máy:** Tự động xác nhận khi LinkedIn hỏi "Are you still watching?".
+* **Loại bỏ phụ thuộc ID:** Không sử dụng các ID dễ thay đổi như `ember123`.
+* **Semantic Search:** Tìm kiếm nút bấm dựa trên ý nghĩa văn bản (Text Content) và thuộc tính trợ năng (ARIA labels).
+* **Deep Crawling:** Tự động tìm thẻ cha có khả năng click (`closest('button')`) khi nhận diện được văn bản bên trong.
+* **Đa chế độ:** Hỗ trợ đồng thời Video, Tài liệu (Reading), Quiz và Chuyển chương (Section).
 
-## 🛠 Hướng dẫn cài đặt
+## 🛠 Cách cài đặt & Cập nhật
+1. Lưu mã nguồn vào thư mục.
+2. Tại `chrome://extensions/`, nạp thư mục qua **Load unpacked**.
+3. Mỗi khi cập nhật code mới, hãy nhấn nút **Reload (biểu tượng xoay)** trên thẻ Extension để thay đổi có hiệu lực.
 
-1.  Lưu file `manifest.json` và `content.js` vào thư mục `LinkedInAutoPlayer`.
-2.  Mở Chrome, truy cập `chrome://extensions/`.
-3.  Bật **Developer mode** (Góc trên bên phải).
-4.  Chọn **Load unpacked** và trỏ đến thư mục trên.
-5.  F5 lại trang LinkedIn Learning để áp dụng thay đổi.
-
-## 📂 Cấu trúc dự án
-* `manifest.json`: Cấu hình quyền truy cập.
-* `content.js`: Logic điều hướng tự động dựa trên DOM Selector và Text Matching.
-
-## ⚠️ Lưu ý
-* **Tốc độ:** Mặc định script quét mỗi 3 giây và đợi 5 giây tại trang tài liệu để đảm bảo tính ổn định.
-* **Bảo trì:** Nếu LinkedIn thay đổi giao diện, hãy cập nhật lại các Class Selector trong `content.js` dựa trên mã HTML thực tế.
+## ⚙️ Cơ chế hoạt động
+Extension quét trang mỗi 3 giây. Riêng với tài liệu đọc, hệ thống sẽ đợi 5 giây để mô phỏng hành vi đọc của con người trước khi tự động nhấn "Next".
 
 ---
-*Phát triển bởi Trí tuệ nhân tạo dành cho cộng đồng tự học.*
+*Lưu ý: Luôn chạy trình duyệt ở tab đang hiển thị (active tab) để đạt hiệu quả cao nhất.*
