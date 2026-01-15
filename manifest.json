@@ -1,9 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "LinkedIn Learning Tool",
-  "version": "1.5",
-  "description": "N/A",
-  "permissions": ["scripting", "activeTab"],
+  "name": "LinkedIn Learning Auto-Streamer",
+  "version": "1.7",
+  "description": "Tự động hóa hoàn toàn quá trình học tập trên LinkedIn Learning.",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "action": {
+    "default_popup": "popup.html"
+  },
   "content_scripts": [
     {
       "matches": ["*://www.linkedin.com/learning/*"],
